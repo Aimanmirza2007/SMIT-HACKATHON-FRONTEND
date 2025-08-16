@@ -13,7 +13,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${process.env.NEXT_PUBLIC_ATLAS_URL}/api/auth/login`, {
+    const res = await fetch(`http://localhost:4000/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -21,12 +21,12 @@ export default function Login() {
     });
 
     const data = await res.json();
-    console.log("Login response:", data); // 👀 Check the response
+    console.log("Login response:", data); 
     if (res.ok) {
-        localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("user", JSON.stringify(data.user));
       alert(`Welcome, ${data.user.name}`);
       console.log(data.user.name);
-      
+
       router.push("/portfolio");
     } else {
       alert(data.message);

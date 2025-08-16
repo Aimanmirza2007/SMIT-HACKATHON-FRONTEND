@@ -24,10 +24,12 @@ export default function Signup() {
     setForm({ ...form, skills: newSkills });
   };
 
+  // add skill
   const addSkill = () => {
     setForm({ ...form, skills: [...form.skills, ""] });
   };
 
+  // remove skill
   const removeSkill = (index) => {
     const newSkills = form.skills.filter((_, i) => i !== index);
     setForm({ ...form, skills: newSkills });
@@ -45,23 +47,25 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prepare payload removing empty skills
     const payload = {
       name: form.name,
       email: form.email,
       password: form.password,
       github: form.github,
-      image: form.image, // ✅ add this
+      image: form.image,
       skills: form.skills.filter((skill) => skill.trim() !== ""),
     };
-    const res = await fetch(`${process.env.NEXT_PUBLIC_ATLAS_URL}/api/auth/signup`, {
+    const res = await fetch(`http://localhost:4000/api/auth/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify(payload),
     });
 
-    const data = await res.json();
+    const text = await res.text();
+    console.log("Raw response:", text);
+
+    const data = JSON.parse(text);
 
     if (res.ok) {
       alert("Signup successful!");
